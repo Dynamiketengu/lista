@@ -1,35 +1,32 @@
-class Cliente {
-    constructor(nome) {
-      this.nome = nome;
-      this.listaDeCompras = [];
-    }
+function NotaFiscal(cliente, produtos) {
+    this.cliente = cliente;
+    this.produtos = produtos;
+    this.total = 0;
   
-
-    adicionarProduto(produto) {
-      this.listaDeCompras.push(produto);
-    }
+    this.calcularTotal = function() {
+      this.total = this.produtos.reduce((total, produto) => total + produto.preco * produto.quantidade, 0);
+    };
   
-    calcularTotal() {
-      let total = 0;
-      for (let i = 0; i < this.listaDeCompras.length; i++) {
-        total += this.listaDeCompras[i].preco;
-      }
-      return total;
-    }
+    this.imprimirNota = function() {
+      console.log(`Nota Fiscal - ${this.cliente.nome}`);
+      console.log(`---------------------------`);
+      console.log(`Produtos:`);
+      this.produtos.forEach((produto) => {
+        console.log(`  ${produto.nome} - R$ ${produto.preco.toFixed(2)} x ${produto.quantidade} = R$ ${(produto.preco * produto.quantidade).toFixed(2)}`);
+      });
+      console.log(`---------------------------`);
+      console.log(`Total: R$ ${this.total.toFixed(2)}`);
+    };
   }
   
-  class Produto {
-    constructor(nome, preco) {
-      this.nome = nome;
-      this.preco = preco;
-    }
-  }
-
-  const cliente = new Cliente('');
-  const produto1 = new Produto('Leite', 2.50);
-  const produto2 = new Produto('Pão', 1.50);
+  // Exemplo de uso
+  const cliente = { nome: 'João da Silva' };
+  const produtos = [
+    { nome: 'Leite', preco: 2.5, quantidade: 2 },
+    { nome: 'Pão', preco: 1.5, quantidade: 3 },
+    { nome: 'Ovo', preco: 0.5, quantidade: 6 },
+  ];
   
-  cliente.adicionarProduto(produto1);
-  cliente.adicionarProduto(produto2);
-  
-  console.log(`Total: R$ ${cliente.calcularTotal().toFixed(2)}`);
+  const notaFiscal = new NotaFiscal(cliente, produtos);
+  notaFiscal.calcularTotal();
+  notaFiscal.imprimirNota();
