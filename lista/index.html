@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baixando arquivo com FileSaver</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.js" integrity="sha512-UNbeFrHORGTzMn3HTt00fvdojBYHLPxJbLChmtoyDwB6P9hX5mah3kMKm0HHNx/EvSPJt14b+SlD8xhuZ4w9Lg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <style>
+        div{
+            margin: 10px auto;
+            width: 50%;
+            min-width: 300px;
+        }
+        input,
+        textarea{
+            width: 100%;
+            min-width: 250px;
+        }
+        body{
+            background-color: rgb(197, 238, 238);
+        }
+    </style>
+</head>
+<body>
+   
+    <div>
+        <h3>Salvar arquivo com JavaScript </h3>
+        <p>Nome do arquivo:</p>
+        <input type="text" id="titulo" placeholder="Nome do Arquivo" autofocus>
+    </div>
+
+    <div>
+        <p>Texto</p>
+        <textarea id="texto" placeholder="Digite seu texto aqui."></textarea>
+    </div>
+    <div>
+        <button onclick="salvar()">
+            Salvar
+        </button>
+    </div>
+
+   <script> 
+
+            function salvar(){
+
+                const texto  = document.getElementById('texto').value;
+                const titulo = document.getElementById('titulo').value;
+
+                var blob = new Blob([texto],
+                {type: 'text/plain: charset=utf-8'}
+                );
+
+               saveAs(blob, titulo + '.txt');
+
+
+            }
+   
+   </script>
+   
+
+</body>
+</html>
