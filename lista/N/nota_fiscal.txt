@@ -1,0 +1,7 @@
+Nota Fiscal
+Data: 07/08/2024
+Hora: 14:34:34
+Cliente: b
+Itens:
+ 1. Carne - Quantidade: 2 - Preço: R$ 15.00
+Total: R$ 30.00
