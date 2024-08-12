@@ -1,12 +1,10 @@
 import random
 import datetime
 
-# Função para gravar dados em um arquivo
 def gravar_dados(file, dados):
     with open(file, "w") as f:
         f.write(str(dados))
 
-# Função para ler dados de um arquivo
 def ler_dados(file):
     try:
         with open(file, "r") as f:
@@ -14,7 +12,6 @@ def ler_dados(file):
     except FileNotFoundError:
         return {}
 
-# Função para cadastrar um novo cliente
 def cadastrar_cliente(clientes, nome, senha):
     if nome not in clientes:
         clientes[nome] = {"senha": senha, "produtos": {}}
@@ -23,7 +20,6 @@ def cadastrar_cliente(clientes, nome, senha):
         print("Nome de usuário já existe. Escolha outro nome.")
         return clientes
 
-# Função para adicionar um produto ao carrinho do cliente
 def add_produto_cliente(clientes, nome_cliente, produto, quantidade, produtos_disponiveis):
     if produto in produtos_disponiveis:
         preco = produtos_disponiveis[produto]["preco"]
@@ -42,33 +38,29 @@ def add_produto_cliente(clientes, nome_cliente, produto, quantidade, produtos_di
         print(f"Quantidade solicitada de {produto} não disponível.")
         return False
 
-# Função para calcular o total da compra do cliente
 def calcular_total_cliente(clientes, nome_cliente):
     total = 0
     for produto, dados in clientes[nome_cliente]["produtos"].items():
         total += dados["quantidade"] * dados["preco"]
     return total
 
-# Função para mostrar os produtos disponíveis
 def mostrar_produtos_disponiveis(produtos_disponiveis):
     print("\nProdutos Disponíveis:")
     for chave, dados in produtos_disponiveis.items():
         print(f"{dados['nome']} - Estoque: {dados['estoque']} unidades - Preço: R${dados['preco']:.2f}")
 
-# Função para mostrar os produtos no carrinho do cliente
 def mostrar_produtos_cliente(clientes, nome_cliente):
     print("\nProdutos no Carrinho:")
     for produto, dados in clientes[nome_cliente]["produtos"].items():
         print(f"{produto}: {dados['quantidade']} unidades x R${dados['preco']:.2f} = R${dados['quantidade'] * dados['preco']:.2f}")
 
-# Função para realizar o login do cliente
+
 def login_cliente(clientes, nome, senha):
     if nome in clientes and clientes[nome]["senha"] == senha:
         return True
     else:
         return False
 
-# Função para salvar a compra em um arquivo de nota fiscal
 def salvar_compra(clientes, nome_cliente):
     data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     nome_arquivo = f"nota_fiscal_{nome_cliente}_{data_hora}.txt"
@@ -84,10 +76,8 @@ def salvar_compra(clientes, nome_cliente):
         total = calcular_total_cliente(clientes, nome_cliente)
         file.write(f"\nTotal da Compra: R${total:.2f}")
 
-# Arquivo para armazenar os dados dos clientes
 clientes_file = "clientes.txt"
 
-# Dicionário com os produtos disponíveis
 produtos_disponiveis = {
     'arroz': {'nome': 'arroz', 'estoque': 10, 'preco': 30.0},
     'feijão': {'nome': 'feijão', 'estoque': 15, 'preco': 16.0},
@@ -106,10 +96,9 @@ produtos_disponiveis = {
     'geleia': {'nome': 'geleia', 'estoque': 5, 'preco': 10.90},
 }
 
-# Carregar dados dos clientes do arquivo
+
 clientes = ler_dados(clientes_file)
 
-# Loop principal do programa
 while True:
     print("\nOpções:")
     print("1. Cadastrar cliente")
