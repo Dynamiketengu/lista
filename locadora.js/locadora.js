@@ -21,6 +21,27 @@ const rl = readline.createInterface({
 const ADMIN_USER = "admin"; // Nome de usuário do admin
 const ADMIN_PASS = "admin123"; // Senha do admin
 
+function iniciarSistema() {
+  console.log("\nBem-vindo ao sistema de locação de filmes!");
+  rl.question('Escolha uma opção:\n1 - Cadastrar usuário\n2 - Logar\n3 - Sair\nOpção: ', function(opcao) {
+    switch (opcao) {
+      case '1':
+        cadastrarUsuario();
+        break;
+      case '2':
+        logarUsuario();
+        break;
+      case '3':
+        rl.close();
+        break;
+      default:
+        console.log("Opção inválida.");
+        iniciarSistema();
+        break;
+    }
+  });
+}
+
 function cadastrarUsuario() {
   rl.question('Digite seu nome: ', function(nome) {
     rl.question('Digite sua senha: ', function(senha) {
@@ -172,7 +193,7 @@ function finalizarLocacao() {
 }
 
 function menuAdm() {
-  rl.question('\nEscolha uma opção:\n1 - Adicionar filme\n2 - Remover filme\n3 - Atualizar filme\n4 - Sair\nOpção: ', function(opcao) {
+  rl.question('\nEscolha uma opção:\n1 - Adicionar filme\n2 - Remover filme\n3 - Atualizar filme\n4 - Listar usuários\n5 - Sair\nOpção: ', function(opcao) {
     switch (opcao) {
       case '1':
         adicionarFilme();
@@ -184,6 +205,9 @@ function menuAdm() {
         atualizarFilme();
         break;
       case '4':
+        listarUsuarios();
+        break;
+      case '5':
         iniciarSistema();
         break;
       default:
@@ -226,5 +250,47 @@ function removerFilme() {
 }
 
 function atualizarFilme() {
-  rl.question('Digite o ID do filme que deseja atualizar')
+  rl.question('Digite o ID do filme que deseja atualizar: ', function(id) {
+    const filme = catalogo.find(f => f.id === parseInt(id));
+    if (!filme) {
+      console.log("Filme não encontrado.");
+      menuAdm();
+      return;
+    }
+    rl.question('Digite o novo nome do filme: ', function(novoNome) {
+      rl.question('Digite o novo preço do aluguel: ', function(novoPreco) {
+        rl.question('Digite a nova quantidade disponível: ', function(novaQtd) {
+          filme.nome = novoNome || filme.nome;
+          filme.preco = parseFloat(novoPreco) || filme.preco;
+          filme.quantidadeDisponivel = parseInt(novaQtd) || filme.quantidadeDisponivel;
+          console.log(`Filme "${filme.nome}" atualizado com sucesso.`);
+          menuAdm();
+        });
+      });
+    });
+  });
+}
+
+function listarUsuarios() {
+  if (usuarios.length === 0) {
+    console.log("Nenhum usuário cadastrado.");
+  } else {
+    console.log("\nUsuários Cadastrados:");
+    usuarios.forEach((usuario, index) => {
+      console.log(`${index + 1}. ${usuario.nome}`);
+    });
+
+  
+    let conteudoUsuarios = "Usuários Cadastrados:\n";
+    usuarios.forEach(usuario => {
+      conteudoUsuarios += `${usuario.nome}\n`;
+    });
+    
+    fs.writeFileSync('usuarios.txt', conteudoUsuarios);
+    console.log("Lista de usuários salva em usuarios.txt");
   }
+  menuAdm();
+}
+
+// Inicia o sistema
+iniciarSistema();
